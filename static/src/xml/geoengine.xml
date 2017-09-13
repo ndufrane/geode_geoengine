@@ -1,0 +1,7 @@
+<template>
+
+  <t t-name="FieldGeoEngineEditMap">
+    <div t-att-id="widget.name" t-attf-class="field_#{widget.widget}" border="1"/>
+  </t>
+
+</template>
