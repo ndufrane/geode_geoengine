@@ -122,7 +122,10 @@ var FieldGeoEngineEditMap = common.AbstractField.extend(geoengine_common.Geoengi
                 geometry: new ol.format.GeoJSON().readGeometry(value),
                 labelPoint:  new ol.format.GeoJSON().readGeometry(value),
             });
-            this.source.clear();
+            if(this.geo_type.slice(0,5) !== 'MULTI') {
+                this.source.clear();
+            }
+
             this.source.addFeature(ft);
             if (value){
 
@@ -200,11 +203,26 @@ var FieldGeoEngineEditMap = common.AbstractField.extend(geoengine_common.Geoengi
         });
         this.map.addInteraction(this.draw_control);
         var onchange_geom = function(e){
-            // Trigger onchanges when drawing is done
-            if (e.type == 'drawend') {
-                self._geometry = e.feature.getGeometry();
-            } else { // modifyend
-                self._geometry = e.features.item(0).getGeometry();
+            if (this.geo_type == 'MULTIPOLYGON') {
+                var multi_poly = new ol.geom.MultiPolygon();
+                this.source.getFeaturesCollection().forEach(function(feat){
+                    var polys = feat.getPolygons();
+                    for(var i=0; i < polys.length; i++) {
+                        multi_poly.appendPolygon(polys[i]);
+                    }
+                });
+                self._geometry = multi_poly;
+            } else if (this.geo_type == 'MULTILINESTRING') {
+                handler = "MultiLineString";
+            } else if (this.geo_type == 'MULTIPOINT') {
+                handler = "MultiPoint";
+            } else {
+                // Trigger onchanges when drawing is done
+                if (e.type == 'drawend') {
+                    self._geometry = e.feature.getGeometry();
+                } else { // modifyend
+                    self._geometry = e.features.item(0).getGeometry();
+                }
             }
             self.on_ui_change();
         };
