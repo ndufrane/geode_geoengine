@@ -122,7 +122,7 @@ var FieldGeoEngineEditMap = common.AbstractField.extend(geoengine_common.Geoengi
                 geometry: new ol.format.GeoJSON().readGeometry(value),
                 labelPoint:  new ol.format.GeoJSON().readGeometry(value),
             });
-            if(this.geo_type.slice(0,5) !== 'MULTI') {
+            if(this.geo_type.slice(0,5) !== 'MULTI' && zoom === false) {
                 this.source.clear();
             }
 
