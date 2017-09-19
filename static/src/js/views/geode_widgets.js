@@ -122,10 +122,8 @@ var FieldGeoEngineEditMap = common.AbstractField.extend(geoengine_common.Geoengi
                 geometry: new ol.format.GeoJSON().readGeometry(value),
                 labelPoint:  new ol.format.GeoJSON().readGeometry(value),
             });
-            if(this.geo_type.slice(0,5) !== 'MULTI' && zoom === true) {
-                this.source.clear();
-            }
 
+            this.source.clear();
             this.source.addFeature(ft);
             if (value){
 
@@ -212,6 +210,7 @@ var FieldGeoEngineEditMap = common.AbstractField.extend(geoengine_common.Geoengi
                     }
                 });
                 self._geometry = multi_poly;
+                this.value = this.format.writeGeometry(this._geometry);
             } else if (this.geo_type == 'MULTILINESTRING') {
                 handler = "MultiLineString";
             } else if (this.geo_type == 'MULTIPOINT') {
@@ -223,8 +222,9 @@ var FieldGeoEngineEditMap = common.AbstractField.extend(geoengine_common.Geoengi
                 } else { // modifyend
                     self._geometry = e.features.item(0).getGeometry();
                 }
+                self.on_ui_change();
             }
-            self.on_ui_change();
+
         };
         this.draw_control.on('drawend', onchange_geom);
 
