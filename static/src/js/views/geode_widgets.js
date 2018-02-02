@@ -209,6 +209,7 @@ var FieldGeoEngineEditMap = common.AbstractField.extend(geoengine_common.Geoengi
                         multi_poly.appendPolygon(polys[i]);
                     }
                 });
+                multi_poly.appendPolygon(e.feature.getGeometry());
                 self._geometry = multi_poly;
                 this.value = this.format.writeGeometry(this._geometry);
             } else if (this.geo_type == 'MULTILINESTRING') {
@@ -226,7 +227,7 @@ var FieldGeoEngineEditMap = common.AbstractField.extend(geoengine_common.Geoengi
             }
 
         };
-        this.draw_control.on('drawend', onchange_geom);
+        this.draw_control.on('drawend', onchange_geom.bind(this));
 
         this.features = this.source.getFeaturesCollection();
         this.modify_control = new ol.interaction.Modify({
