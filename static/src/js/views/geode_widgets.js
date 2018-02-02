@@ -204,9 +204,12 @@ var FieldGeoEngineEditMap = common.AbstractField.extend(geoengine_common.Geoengi
             if (this.geo_type == 'MULTIPOLYGON') {
                 var multi_poly = new ol.geom.MultiPolygon();
                 this.source.getFeaturesCollection().forEach(function(feat){
-                    var polys = feat.getPolygons();
-                    for(var i=0; i < polys.length; i++) {
-                        multi_poly.appendPolygon(polys[i]);
+                    var geometry = feat.getGeometry();
+                    if(geometry){
+                        var polys = geometry.getPolygons();
+                        for(var i=0; i < polys.length; i++) {
+                            multi_poly.appendPolygon(polys[i]);
+                        }
                     }
                 });
                 multi_poly.appendPolygon(e.feature.getGeometry());
