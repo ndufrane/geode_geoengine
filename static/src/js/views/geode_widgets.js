@@ -212,7 +212,7 @@ var FieldGeoEngineEditMap = common.AbstractField.extend(geoengine_common.Geoengi
                         }
                     }
                 });
-                multi_poly.appendPolygon(e.feature.getGeometry());
+                multi_poly.appendPolygon(e.feature.getGeometry().getPolygons()[0]);
                 self._geometry = multi_poly;
                 this.value = this.format.writeGeometry(this._geometry);
             } else if (this.geo_type == 'MULTILINESTRING') {
