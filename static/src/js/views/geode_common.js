@@ -63,16 +63,23 @@ var GeoengineMixin = {
                                 type: l.overlay ? 'overlay' : 'base',
                                 source: new ol.source.WMTS((options))
                           });
+
+                          var found = false;
                           geoengine.map.getLayers().forEach(function(layer, i) {
                             if (layer instanceof ol.layer.Group) {
                                 if(l.overlay && layer.get('title') === 'Overlays') {
                                     layer.getLayers().push(wmts_layer);
+                                    found = true;
                                 }
                                 if(!l.overlay && layer.get('title') === 'Base maps') {
                                     layer.getLayers().push(wmts_layer);
+                                    found = true;
                                 }
                             }
                           });
+                          if (found === false) {
+                            geoengine.map.getLayers().push(wmts_layer);
+                          }
                        });
                        break;
                     case "osm":

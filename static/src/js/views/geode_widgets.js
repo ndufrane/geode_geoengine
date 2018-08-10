@@ -53,8 +53,10 @@ var FieldGeoEngineEditMap = common.AbstractField.extend(geoengine_common.Geoengi
 
     create_layers: function(self, field_infos) {
         this.vector_layer = this.create_vector_layer();
-        this.raster_layers = this.createBackgroundLayers([field_infos.edit_raster]);
-        this.raster_layers[0].isBaseLayer = true;
+        this.raster_layers = this.createBackgroundLayers([field_infos.edit_raster], this);
+        if(this.raster_layers && this.raster_layers.length > 0) {
+          this.raster_layers[0].isBaseLayer = true;
+        }
     },
 
     add_tab_listener: function() {
