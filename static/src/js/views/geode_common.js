@@ -50,7 +50,7 @@ var GeoengineMixin = {
                         break;
                     case "wmts_cap":
                         var parser = new ol.format.WMTSCapabilities();
-                        fetch(l.url).then(function(response) {
+                        unfetch(l.url).then(function(response) {
                           return response.text();
                         }).then(function(text) {
                           var result = parser.read(text);
